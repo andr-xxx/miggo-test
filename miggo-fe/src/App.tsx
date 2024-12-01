@@ -5,16 +5,16 @@ import {ISSInfo} from "./ISSInfo";
 import {useISSData} from "./useISSData";
 
 function App() {
-    const { current, currentPosition, retrospectiveData, fetchData } = useISSData()
+    const { current, positions, fetchData } = useISSData()
 
-    if (!currentPosition) {
+    if (!positions.length) {
         return <div>Loading...</div>
     }
 
     return (
         <main className="app">
           <div className="map">
-              <Map position={currentPosition} retrospectiveData={retrospectiveData}/>
+              <Map positions={positions}/>
           </div>
           {current && <ISSInfo info={current} updatePosition={fetchData}/>}
       </main>
