@@ -1,23 +1,28 @@
 import {FC} from "react";
 
-import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
+import {MapContainer, TileLayer, Marker, Polyline} from 'react-leaflet'
 
 interface MapProps {
     position: [number, number];
+    retrospectiveData?: [number, number][]
 }
 
-export const Map: FC<MapProps> = ({ position }) => {
-   return (
-        <MapContainer center={position} zoom={4} scrollWheelZoom={false}>
+export const Map: FC<MapProps> = ({ position, retrospectiveData }) => {
+    console.log(retrospectiveData)
+    return (
+        <MapContainer center={position} zoom={7} scrollWheelZoom={false}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={position}>
-                <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-            </Marker>
+            {
+                retrospectiveData && retrospectiveData.map((pos, index) => (
+                    <>
+                        {retrospectiveData[index + 1] ? <Polyline positions={[pos, retrospectiveData[index + 1]]}/> : null}
+                        <Marker position={pos}/>
+                    </>
+                ))
+            }
         </MapContainer>
     )
 }
